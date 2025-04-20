@@ -135,31 +135,6 @@ The MCP agent is defined in `src/mcp-agent.js` and provides the following tools:
 - `get_profile` - Retrieves the authenticated user's profile information
 - `get_data` - Retrieves sample data associated with the authenticated user
 
-### MCP in Claude or other AI Assistants
-
-To use this MCP server with Claude Desktop:
-
-1. Deploy the MCP server to Cloudflare Workers:
-   ```
-   npm run deploy
-   # or
-   wrangler deploy
-   ```
-
-2. Update your Claude Desktop config:
-   ```json
-   {
-     "mcpServers": {
-       "auth0": {
-         "command": "npx",
-         "args": [
-           "mcp-remote",
-           "https://your-worker-subdomain.workers.dev/mcp-sse"
-         ]
-       }
-     }
-   }
-   ```
 
 ## Implementation Details
 
