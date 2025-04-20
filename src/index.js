@@ -387,7 +387,7 @@ router.get('*', async (request, env) => {
     
     return response;
   } catch (error) {
-    console.error("Static asset error:", error);
+    console.error("Static asset error:", error); // Error handling
     return renderError("Failed to load page", 500);
   }
 });
