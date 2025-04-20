@@ -7,7 +7,7 @@
 class MCPAgent {
   constructor() {
     this.tools = {
-      // Tool for fetching user profile
+      // Tool for fetching user profiles
       get_profile: async ({ request }) => {
         console.log("MCP get_profile tool called with user:", request.user);
         const user = request.user;
