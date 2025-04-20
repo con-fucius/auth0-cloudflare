@@ -25,11 +25,16 @@ const initAuth = (env) => {
   kvStore = env.AUTH_STORE;
   
   // Set up Auth0 config from environment variables
-  AUTH0_DOMAIN = env.AUTH0_DOMAIN || "your auth0 app domain"; // Default for dev only
-  AUTH0_CLIENT_ID = env.AUTH0_CLIENT_ID || "your auth0 app client ID"; // Default for dev only
-  AUTH0_CLIENT_SECRET = env.AUTH0_CLIENT_SECRET || "your auth0 app secret"; // Default for dev only
-  AUTH0_CALLBACK_URL = env.AUTH0_CALLBACK_URL || "http://127.0.0.1:8787/auth"; // Default for dev only
-  SALT = env.SALT || "random-secure-salt-value"; // Default for dev only
+  AUTH0_DOMAIN = env.AUTH0_DOMAIN;
+  AUTH0_CLIENT_ID = env.AUTH0_CLIENT_ID;
+  AUTH0_CLIENT_SECRET = env.AUTH0_CLIENT_SECRET;
+  AUTH0_CALLBACK_URL = env.AUTH0_CALLBACK_URL;
+  SALT = env.SALT;
+  
+  // Verify required configuration
+  if (!AUTH0_DOMAIN || !AUTH0_CLIENT_ID || !AUTH0_CLIENT_SECRET) {
+    console.error("Missing required Auth0 configuration. Please set environment variables.");
+  }
   
   console.log("Auth0 configuration loaded. Domain:", AUTH0_DOMAIN);
 };
