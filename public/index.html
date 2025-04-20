@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth0 MCP Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            display: inline-block;
+            background: #0F172A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        .button:hover {
+            background: #1E293B;
+        }
+        .profile {
+            display: none;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Auth0 MCP Integration Demo</h1>
+        <p>Simple demonstration of Auth0 integration with Cloudflare MCP</p>
+    </div>
+
+    <div class="card">
+        <h2>Authentication Status</h2>
+        <div id="login-container">
+            <p>You are not logged in.</p>
+            <button id="login-button" class="button">Log In</button>
+        </div>
+        <div id="profile-container" class="hidden">
+            <p>You are logged in as: <span id="user-name">Unknown</span></p>
+            <button id="logout-button" class="button">Log Out</button>
+        </div>
+    </div>
+
+    <div id="profile" class="card profile">
+        <h2>User Profile</h2>
+        <pre id="profile-data">Loading...</pre>
+    </div>
+
+    <div class="card">
+        <h2>MCP Demo</h2>
+        <p>Use this MCP-enabled feature to interact with your data:</p>
+        <button id="mcp-button" class="button">Fetch Data via MCP</button>
+        <div id="mcp-result" style="margin-top: 20px;"></div>
+    </div>
+
+    <script id="edge_state" type="application/json">
+      {}
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get user info from edge state
+            const edgeStateElement = document.getElementById('edge_state');
+            let userInfo = {};
+            try {
+                userInfo = JSON.parse(edgeStateElement.textContent);
+            } catch (e) {
+                console.error('Failed to parse edge state:', e);
+            }
+
+            const loginButton = document.getElementById('login-button');
+            const logoutButton = document.getElementById('logout-button');
+            const loginContainer = document.getElementById('login-container');
+            const profileContainer = document.getElementById('profile-container');
+            const userName = document.getElementById('user-name');
+            const profile = document.getElementById('profile');
+            const profileData = document.getElementById('profile-data');
+            const mcpButton = document.getElementById('mcp-button');
+            const mcpResult = document.getElementById('mcp-result');
+
+            // Check if user is logged in
+            if (userInfo && userInfo.name) {
+                loginContainer.classList.add('hidden');
+                profileContainer.classList.remove('hidden');
+                userName.textContent = userInfo.name || userInfo.email;
+                profile.style.display = 'block';
+                profileData.textContent = JSON.stringify(userInfo, null, 2);
+            }
+
+            // Login button handler
+            loginButton.addEventListener('click', function() {
+                window.location.href = '/login';
+            });
+
+            // Logout button handler
+            logoutButton.addEventListener('click', function() {
+                window.location.href = '/logout';
+            });
+
+            // MCP button handler
+            mcpButton.addEventListener('click', async function() {
+                mcpResult.innerHTML = 'Loading...';
+                try {
+                    const response = await fetch('/api/data');
+                    const data = await response.json();
+                    mcpResult.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } catch (error) {
+                    mcpResult.innerHTML = `<p>Error: ${error.message}</p>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

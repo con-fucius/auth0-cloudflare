@@ -1,0 +1,21 @@
+{
+  "name": "auth0-mcp-integration",
+  "version": "1.0.0",
+  "description": "Auth0 Integration with MCP on Cloudflare Workers",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "publish": "wrangler publish"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.4.0",
+    "cookie": "^0.5.0",
+    "itty-router": "^3.0.12",
+    "jose": "^4.15.9"
+  },
+  "devDependencies": {
+    "wrangler": "^4.12.0"
+  }
+}
