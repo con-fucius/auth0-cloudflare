@@ -11,7 +11,7 @@ const injectUserData = async (response, userData) => {
     return response;
   }
 
-  // Get the HTML content
+  // Get the HTML contents
   const html = await response.text();
 
   // Look for the edge_state script tag
